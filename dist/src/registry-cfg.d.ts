@@ -1,0 +1,17 @@
+import { ContractKit } from "@celo/contractkit";
+import { RegistryAave } from "./registries/aave";
+import { RegistryAaveV2 } from "./registries/aave-v2";
+import { RegistryMento } from "./registries/mento";
+import { RegistryStatic } from "./registries/static";
+import { RegistryUniswapV2 } from "./registries/uniswapv2";
+import { RegistryBalancer } from "./registries/balancer";
+export declare const mainnetRegistryMoola: (kit: ContractKit) => RegistryAave;
+export declare const mainnetRegistryUbeswap: (kit: ContractKit) => RegistryUniswapV2;
+export declare const mainnetRegistrySushiswap: (kit: ContractKit) => RegistryUniswapV2;
+export declare const mainnetRegistryMobius: (kit: ContractKit) => RegistryStatic;
+export declare const mainnetRegistryMisc: (kit: ContractKit) => RegistryStatic;
+export declare const mainnetRegistrySavingsCELO: (kit: ContractKit) => RegistryStatic;
+export declare const mainnetRegistryMoolaV2: (kit: ContractKit) => RegistryAaveV2;
+export declare const mainnetRegistryCeloDex: (kit: ContractKit) => RegistryUniswapV2;
+export declare const mainnetRegistrySymmetric: (kit: ContractKit) => RegistryBalancer;
+export declare const mainnetRegistriesWhitelist: (kit: ContractKit) => (RegistryStatic | RegistryAave | RegistryMento | RegistryUniswapV2 | RegistryAaveV2 | RegistryBalancer)[];
