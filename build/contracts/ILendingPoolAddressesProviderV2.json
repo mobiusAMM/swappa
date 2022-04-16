@@ -1,0 +1,263 @@
+{
+  "contractName": "ILendingPoolAddressesProviderV2",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getLendingPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.8+commit.0bbfe453\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getLendingPool\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/aave-v2/ILendingPoolAddressesProviderV2.sol\":\"ILendingPoolAddressesProviderV2\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":10000},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/aave-v2/ILendingPoolAddressesProviderV2.sol\":{\"keccak256\":\"0x8d87e8c289c19d6415a0b1e88050904c3934c868ec6cc47f2915c94a3a415058\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7994deca468d6a7e316bbf4c4afc850e6169e25d500c9268d4093cb77ce03036\",\"dweb:/ipfs/QmPF6AAMWo3HHDNvCp2XYefwtRJWePum7njRsuemGy6KpD\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity 0.6.8;\n\ninterface ILendingPoolAddressesProviderV2 {\n  function getLendingPool() external view returns (address);\n}\n",
+  "sourcePath": "/Users/dylanmooers/Code/OpenCeloProjects/Mobius/swappa/contracts/interfaces/aave-v2/ILendingPoolAddressesProviderV2.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/aave-v2/ILendingPoolAddressesProviderV2.sol",
+    "exportedSymbols": {
+      "ILendingPoolAddressesProviderV2": [
+        1044
+      ]
+    },
+    "id": 1045,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1038,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".8"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:22:6"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 1044,
+        "linearizedBaseContracts": [
+          1044
+        ],
+        "name": "ILendingPoolAddressesProviderV2",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "0261bf8b",
+            "id": 1043,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getLendingPool",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 1039,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "125:2:6"
+            },
+            "returnParameters": {
+              "id": 1042,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1041,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1043,
+                  "src": "151:7:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1040,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "151:7:6",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "150:9:6"
+            },
+            "scope": 1044,
+            "src": "102:58:6",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 1045,
+        "src": "56:106:6"
+      }
+    ],
+    "src": "32:131:6"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/interfaces/aave-v2/ILendingPoolAddressesProviderV2.sol",
+      "exportedSymbols": {
+        "ILendingPoolAddressesProviderV2": [
+          1044
+        ]
+      },
+      "license": "MIT"
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.6",
+            ".8"
+          ]
+        },
+        "id": 1038,
+        "name": "PragmaDirective",
+        "src": "32:22:6"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "interface",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1044
+          ],
+          "name": "ILendingPoolAddressesProviderV2",
+          "scope": 1045
+        },
+        "children": [
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "functionSelector": "0261bf8b",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getLendingPool",
+              "overrides": null,
+              "scope": 1044,
+              "stateMutability": "view",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1039,
+                "name": "ParameterList",
+                "src": "125:2:6"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "",
+                      "overrides": null,
+                      "scope": 1043,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 1040,
+                        "name": "ElementaryTypeName",
+                        "src": "151:7:6"
+                      }
+                    ],
+                    "id": 1041,
+                    "name": "VariableDeclaration",
+                    "src": "151:7:6"
+                  }
+                ],
+                "id": 1042,
+                "name": "ParameterList",
+                "src": "150:9:6"
+              }
+            ],
+            "id": 1043,
+            "name": "FunctionDefinition",
+            "src": "102:58:6"
+          }
+        ],
+        "id": 1044,
+        "name": "ContractDefinition",
+        "src": "56:106:6"
+      }
+    ],
+    "id": 1045,
+    "name": "SourceUnit",
+    "src": "32:131:6"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.8+commit.0bbfe453.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.4",
+  "updatedAt": "2022-04-16T17:01:07.560Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
