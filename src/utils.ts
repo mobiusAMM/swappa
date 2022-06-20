@@ -20,6 +20,11 @@ export const initPairsAndFilterByWhitelist = async (
   );
 };
 
+export enum ChainId {
+  Celo = 42220,
+  Alfajores = 44787,
+}
+
 interface AddressesByNetwork {
   mainnet?: Address;
   baklava?: Address;
