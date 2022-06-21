@@ -14,7 +14,6 @@ import {
   PairXYeqKBootInfo,
 } from "../pair";
 import { address as pairUniswapV2Address } from "../../tools/deployed/mainnet.PairUniswapV2.addr.json";
-import { address as depositAddress } from "../../tools/deployed/mainnet.DepositUniswapV2.addr.json";
 
 import { ERC20Interface, selectAddress, UniV2Interface } from "../utils";
 import { convertResultToBigNumber, MultiCallPayload } from "../multicall";
@@ -39,10 +38,7 @@ export class PairUniswapV2 extends PairXYeqK {
     private fixedFee: BigNumber = new BigNumber(0.997),
     lp?: Address
   ) {
-    super(
-      selectAddress(chainId, { mainnet: pairUniswapV2Address }),
-      selectAddress(chainId, { mainnet: depositAddress })
-    );
+    super(selectAddress(chainId, { mainnet: pairUniswapV2Address }));
     this.lpToken = lp;
     this.pair = new this.web3.eth.Contract(
       PairABI,
@@ -113,13 +109,9 @@ export class PairUniswapV2 extends PairXYeqK {
     const TEN = new BigNumber("10");
     const liquidityA = this.bucketA.div(TEN.pow(this.decimals[0]));
     const liquidityB = this.bucketB.div(TEN.pow(this.decimals[1]));
-    console.log(liquidityA.toFixed(), liquidityB.toFixed());
     const hide =
       liquidityA.isLessThanOrEqualTo("1000") &&
       liquidityB.isLessThanOrEqualTo("1000");
-    if (hide) {
-      console.log("Hide!");
-    }
     return {
       ...super.getDescriptor(),
       _type: hide ? "general" : "uni-v2",

@@ -177,7 +177,7 @@ export const mainnetRegistryMisc = (kit: ContractKit) => {
 export const mainnetRegistrySavingsCELO = (kit: ContractKit) =>
   new RegistryStatic(
     "savingscelo",
-    web3.eth
+    kit.web3.eth
       .getChainId()
       .then((chainId) => [
         new PairSavingsCELO(chainId, kit, SavingsCELOAddressMainnet),

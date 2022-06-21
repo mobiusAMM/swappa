@@ -16,7 +16,6 @@ import {
 } from "../pair";
 import { ERC20Interface, selectAddress, StableSwapInterface } from "../utils";
 import { address as pairStableSwapAddress } from "../../tools/deployed/mainnet.PairStableSwap.addr.json";
-import { address as depositStableSwapAddress } from "../../tools/deployed/mainnet.DepositStableSwap.addr.json";
 import {
   convertResultToBigNumber,
   convertResultToString,
@@ -63,10 +62,7 @@ export class PairStableSwap extends Pair {
     private swapPoolAddr: Address,
     lp?: Address
   ) {
-    super(
-      selectAddress(chainId, { mainnet: pairStableSwapAddress }),
-      selectAddress(chainId, { mainnet: depositStableSwapAddress })
-    );
+    super(selectAddress(chainId, { mainnet: pairStableSwapAddress }));
     this.lpToken = lp;
     this.swapPool = new web3.eth.Contract(
       SwapABI,
@@ -112,7 +108,6 @@ export class PairStableSwap extends Pair {
   }
 
   public async loadLpAddress(): Promise<boolean> {
-    this.lpToken = await this.swapPool.methods.getLpToken().call();
     return true;
   }
 

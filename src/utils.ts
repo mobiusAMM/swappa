@@ -60,3 +60,11 @@ export const selectAddress = (
       throw new Error(`unknown chainId: ${chainId}!`);
   }
 };
+
+export const chunkArray = <T>(arr: T[], chunkSize: number) => {
+  const chunkedArray: T[][] = new Array(Math.ceil(arr.length / chunkSize));
+  for (let i = 0; i < arr.length; i += chunkSize) {
+    chunkedArray[Math.floor(i / chunkSize)] = arr.slice(i, i + chunkSize);
+  }
+  return chunkedArray;
+};

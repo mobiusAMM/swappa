@@ -3,6 +3,7 @@ import { ContractKit } from "@celo/contractkit";
 import { concurrentMap } from "@celo/utils/lib/async";
 import BigNumber from "bignumber.js";
 import invariant from "tiny-invariant";
+import Web3 from "web3";
 
 import {
   SwappaRouterV1,
