@@ -121,7 +121,6 @@ export class PairUniswapV2 extends PairXYeqK {
   }
 
   public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
-    invariant(this.lpToken, "No lp token given");
     return [
       {
         fieldName: "reserves",
@@ -129,13 +128,6 @@ export class PairUniswapV2 extends PairXYeqK {
         target: this.pairAddr,
         method: "getReserves",
         transformResult: (r) => [r[0].toString(), r[1].toString()],
-      },
-      {
-        fieldName: "lpSupply",
-        targetInterface: ERC20Interface,
-        target: this.lpToken,
-        method: "totalSupply",
-        transformResult: convertResultToBigNumber,
       },
     ];
   }

@@ -59,7 +59,10 @@ async function main() {
     registries,
     web3
   );
-  const pairs = await manager.reinitializePairs(tokenWhitelist);
+  const pairs = await manager.reinitializePairs([
+    ...tokenWhitelist,
+    "0x37f750B7cC259A2f741AF45294f6a16572CF5cAd",
+  ]);
   await Promise.all(pairs.map((p) => p.loadLpAddress()));
   const descriptors = manager.getPairDescriptors();
 
