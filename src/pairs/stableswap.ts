@@ -332,7 +332,6 @@ export class PairStableSwap extends Pair {
   }
 
   public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
-    invariant(this.lpToken, "No lp token supplied");
     const template = {
       targetInterface: StableSwapInterface,
       target: this.swapPoolAddr,
@@ -361,13 +360,6 @@ export class PairStableSwap extends Pair {
         fieldName: "preciseA",
         method: "getAPrecise",
         transformResult: convertResultToString,
-      },
-      {
-        fieldName: "lpSupply",
-        targetInterface: ERC20Interface,
-        target: this.lpToken,
-        method: "totalSupply",
-        transformResult: convertResultToBigNumber,
       },
     ];
     return callInfo.map((el) => ({ ...template, ...el }));
