@@ -1,6 +1,5 @@
 export * from "./swappa-manager";
 export * from "./pair";
-export * from "./pairs";
 export * from "./registry";
 export * from "./router";
 export * from "./registries/static";
