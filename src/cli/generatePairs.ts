@@ -65,7 +65,7 @@ async function main() {
     "0xcC82628f6A8dEFA1e2B0aD7ed448bef3647F7941",
     "0xCD7D7Ff64746C1909E44Db8e95331F9316478817",
     "0x1bfc26cE035c368503fAE319Cc2596716428ca44",
-    "0xed193c4e69f591e42398ef54dea65aa1bb02835c",
+    "0xEd193C4E69F591E42398eF54DEa65aa1bb02835c",
   ]);
   await Promise.all(pairs.map((p) => p.loadLpAddress()));
   const descriptors = manager.getPairDescriptors();
