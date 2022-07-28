@@ -2,3 +2,11 @@ build/
 dist/
 node_modules/
 types/
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
