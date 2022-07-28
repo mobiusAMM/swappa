@@ -41,13 +41,14 @@
     "build": "yarn compile:contracts && yarn compile:ts",
     "lint": "eslint src/ --cache",
     "lint:fix": "eslint --fix --cache src/",
+    "typecheck": "yarn tsc",
     "clean": "rm -rf ./build ./dist ./types",
     "prepublishOnly": "yarn clean && yarn build",
     "devchain": "rm -f ./src/deploy/ganache.*.json && yarn celo-devchain --port 7545",
     "deploy": "yarn ts-node ./src/deploy/deployer.ts",
     "genPairs": "ts-node ./src/cli/generatePairs.ts"
   },
-  "author": "Zviad Metreveli",
+  "author": "Mobius Team",
   "license": "MIT",
   "packageManager": "yarn@3.2.2"
 }

@@ -3,6 +3,8 @@ dist/
 node_modules/
 types/
 
+.eslintcache
+
 .yarn/*
 !.yarn/patches
 !.yarn/releases
