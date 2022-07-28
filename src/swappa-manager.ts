@@ -1,26 +1,23 @@
-import { CeloTransactionObject, toTransactionObject } from "@celo/connect";
-import { ContractKit } from "@celo/contractkit";
+import type { CeloTransactionObject } from "@celo/connect";
+import { toTransactionObject } from "@celo/connect";
+import type { ContractKit } from "@celo/contractkit";
 import { concurrentMap } from "@celo/utils/lib/async";
-import BigNumber from "bignumber.js";
+import type BigNumber from "bignumber.js";
 import invariant from "tiny-invariant";
-import Web3 from "web3";
+import type Web3 from "web3";
 
-import {
-  SwappaRouterV1,
-  ABI as SwappaRouterABI,
-} from "../types/web3-v1-contracts/SwappaRouterV1";
-import {
-  multicallMultipleContractMultipleData,
-  MultiCallPayload,
-} from "./multicall";
-
-import { Address, BootInfo, Pair, PairDescriptor } from "./pair";
+import type { SwappaRouterV1 } from "../types/web3-v1-contracts/SwappaRouterV1";
+import { ABI as SwappaRouterABI } from "../types/web3-v1-contracts/SwappaRouterV1";
+import type { MultiCallPayload } from "./multicall";
+import { multicallMultipleContractMultipleData } from "./multicall";
+import type { Address, BootInfo, Pair, PairDescriptor } from "./pair";
 import { PairATokenV2 } from "./pairs/atoken-v2";
 import { PairStableSwap } from "./pairs/stableswap";
 import { PairSymmetricSwap } from "./pairs/symmetricswap";
 import { PairUniswapV2 } from "./pairs/uniswapv2";
-import { Registry } from "./registry";
-import { findBestRoutesForFixedInputAmount, Route, RouterOpts } from "./router";
+import type { Registry } from "./registry";
+import type { Route, RouterOpts } from "./router";
+import { findBestRoutesForFixedInputAmount } from "./router";
 
 function parsePairTypeToPair(
   { _type: pairType, tokenA, tokenB, poolAddress, lpToken }: PairDescriptor,
@@ -69,14 +66,14 @@ export class SwappaManager {
 
   constructor(
     private kit: ContractKit,
-    public readonly routerAddr: Address,
+    readonly routerAddr: Address,
     private registries: Registry[],
     private web3: Web3
   ) {}
 
-  public bulkRefreshPairs = async (pairBootInfo?: PairDescriptor[]) => {
+  bulkRefreshPairs = async (pairBootInfo?: PairDescriptor[]) => {
     let multicallData = this.multiCallData;
-    let multiCallPayloadSlice =
+    const multiCallPayloadSlice =
       this.multiCallPayloadSlice ?? new Array(this.pairs.length);
     if (!multicallData) {
       multicallData = this.pairs.flatMap((pair, i) => {
@@ -108,7 +105,7 @@ export class SwappaManager {
     await concurrentMap(50, this.pairs, concurrentRefresh);
   };
 
-  public bulkInitializePairs = async (pairBootInfo: PairDescriptor[]) => {
+  bulkInitializePairs = async (pairBootInfo: PairDescriptor[]) => {
     this.pairs = pairBootInfo.map((info) => {
       const pair = parsePairTypeToPair(info, this.web3, 42220) as Pair;
 
@@ -130,18 +127,18 @@ export class SwappaManager {
     return this.pairs;
   }
 
-  public supportsTokens = (tokenIn: Address, tokenOut?: Address) =>
+  supportsTokens = (tokenIn: Address, tokenOut?: Address) =>
     this.pairsByToken.has(tokenIn) &&
     (!tokenOut || this.pairsByToken.has(tokenOut));
 
-  public supportsLp = (lp: Address) => this.pairsByLP.has(lp);
+  supportsLp = (lp: Address) => this.pairsByLP.has(lp);
 
-  public getPairForLP = (lp: Address) => this.pairsByLP.get(lp);
+  getPairForLP = (lp: Address) => this.pairsByLP.get(lp);
 
-  public filterSupportedTokens = (tokens: Address[]) =>
+  filterSupportedTokens = (tokens: Address[]) =>
     tokens.filter((el) => !this.pairsByToken.has(el));
 
-  public reinitializePairs = async (tokenWhitelist: Address[]) => {
+  reinitializePairs = async (tokenWhitelist: Address[]) => {
     this.pairsByRegistry = new Map<string, Pair[]>();
     const pairsAll = await concurrentMap(5, this.registries, (r) =>
       r.findPairs(tokenWhitelist).then((pairs) => {
@@ -170,17 +167,17 @@ export class SwappaManager {
     return this.pairs;
   };
 
-  public refreshPairs = async () => {
+  refreshPairs = async () => {
     await concurrentMap(10, this.pairs, (p) => p.refresh());
     return this.pairs;
   };
 
-  public getDepositAmount = (
+  getDepositAmount = (
     lp: Address,
     inputAmount: BigNumber[],
     previousRoutes?: Route[]
   ) => {
-    let pair = this.pairsByLP.get(lp);
+    const pair = this.pairsByLP.get(lp);
     invariant(pair, `Pair does not exist for lp ${lp}`);
     for (const route of previousRoutes ?? []) {
       route.pairs.forEach((pair, i) => {
@@ -194,12 +191,12 @@ export class SwappaManager {
     return pair.depositAmount(inputAmount[0], inputAmount[1]);
   };
 
-  public getPairsWithLP = (): Pair[] => Array.from(this.pairsByLP.values());
+  getPairsWithLP = (): Pair[] => Array.from(this.pairsByLP.values());
 
-  public getWithdrawAmount = (lp: Address, amount: BigNumber) =>
+  getWithdrawAmount = (lp: Address, amount: BigNumber) =>
     this.pairsByLP.get(lp)?.withdrawAmount(amount);
 
-  public findBestRoutesForFixedInputAmount = (
+  findBestRoutesForFixedInputAmount = (
     inputToken: Address,
     outputToken: Address,
     inputAmount: BigNumber,
@@ -214,11 +211,11 @@ export class SwappaManager {
     );
   };
 
-  public getPairsByRegistry(registry: string): Pair[] {
+  getPairsByRegistry(registry: string): Pair[] {
     return this.pairsByRegistry.get(registry) || [];
   }
 
-  public getPairDescriptors(): PairDescriptor[] {
+  getPairDescriptors(): PairDescriptor[] {
     return this.pairs
       .map((el) => el.getDescriptor())
       .filter(({ _type }) => _type !== "general");

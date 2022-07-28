@@ -1,15 +1,13 @@
-import BigNumber from "bignumber.js";
-import Web3 from "web3";
+import type BigNumber from "bignumber.js";
+import type Web3 from "web3";
 
-import {
-  ILendingPoolV2,
-  ABI as ILendingPoolV2ABI,
-} from "../../types/web3-v1-contracts/ILendingPoolV2";
-
-import { Address, Pair, PairDescriptor, Snapshot } from "../pair";
-import { selectAddress } from "../utils";
 import { address as pairATokenV2Address } from "../../tools/deployed/mainnet.PairATokenV2.addr.json";
-import { MultiCallPayload } from "../multicall";
+import type { ILendingPoolV2 } from "../../types/web3-v1-contracts/ILendingPoolV2";
+import { ABI as ILendingPoolV2ABI } from "../../types/web3-v1-contracts/ILendingPoolV2";
+import type { MultiCallPayload } from "../multicall";
+import type { Address, PairDescriptor, Snapshot } from "../pair";
+import { Pair } from "../pair";
+import { selectAddress } from "../utils";
 
 /**
  * PairATokenV2
@@ -48,14 +46,14 @@ export class PairATokenV2 extends Pair {
       tokenB,
     };
   }
-  public async refresh(): Promise<void> {}
+  async refresh(): Promise<void> {}
 
   protected swapExtraData(inputToken: Address) {
     const swapType = inputToken === this.tokenA ? "01" : "02";
     return `${this.poolAddr}${swapType}`;
   }
 
-  public outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
+  outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
     if (inputToken !== this.tokenA && inputToken !== this.tokenB) {
       throw new Error(
         `unsupported input: ${inputToken}, pair: ${this.tokenA}/${this.tokenB}!`
@@ -64,19 +62,19 @@ export class PairATokenV2 extends Pair {
     return inputAmount;
   }
 
-  public snapshot(): Snapshot {
+  snapshot(): Snapshot {
     return {};
   }
 
-  public restore(snapshot: Snapshot): void {
+  restore(snapshot: Snapshot): void {
     // do nothing
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     return [];
   }
 
-  public getDescriptor(): PairDescriptor {
+  getDescriptor(): PairDescriptor {
     return {
       ...super.getDescriptor(),
       _type: "atoken-v2",

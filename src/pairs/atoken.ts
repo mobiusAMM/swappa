@@ -1,19 +1,15 @@
-import BigNumber from "bignumber.js";
-import Web3 from "web3";
-import { ContractKit } from "@celo/contractkit";
-import {
-  ILendingPool,
-  ABI as LendingPoolABI,
-} from "../../types/web3-v1-contracts/ILendingPool";
-import {
-  ILendingPoolAddressesProvider,
-  ABI as LendingPoolAddressProviderABI,
-} from "../../types/web3-v1-contracts/ILendingPoolAddressesProvider";
+import type { ContractKit } from "@celo/contractkit";
+import type BigNumber from "bignumber.js";
 
-import { Address, Pair, Snapshot } from "../pair";
-import { selectAddress } from "../utils";
 import { address as pairATokenAddress } from "../../tools/deployed/mainnet.PairAToken.addr.json";
-import { MultiCallPayload } from "../multicall";
+import type { ILendingPool } from "../../types/web3-v1-contracts/ILendingPool";
+import { ABI as LendingPoolABI } from "../../types/web3-v1-contracts/ILendingPool";
+import type { ILendingPoolAddressesProvider } from "../../types/web3-v1-contracts/ILendingPoolAddressesProvider";
+import { ABI as LendingPoolAddressProviderABI } from "../../types/web3-v1-contracts/ILendingPoolAddressesProvider";
+import type { MultiCallPayload } from "../multicall";
+import type { Address, Snapshot } from "../pair";
+import { Pair } from "../pair";
+import { selectAddress } from "../utils";
 
 export const ReserveCELO = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -60,7 +56,7 @@ export class PairAToken extends Pair {
       tokenB,
     };
   }
-  public async refresh(): Promise<void> {}
+  async refresh(): Promise<void> {}
 
   protected swapExtraData(inputToken: Address) {
     const swapType =
@@ -72,7 +68,7 @@ export class PairAToken extends Pair {
     return `${this.providerAddr}${swapType}`;
   }
 
-  public outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
+  outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
     if (inputToken !== this.tokenA && inputToken !== this.tokenB) {
       throw new Error(
         `unsupported input: ${inputToken}, pair: ${this.tokenA}/${this.tokenB}!`
@@ -81,11 +77,11 @@ export class PairAToken extends Pair {
     return inputAmount;
   }
 
-  public snapshot(): Snapshot {
+  snapshot(): Snapshot {
     return {};
   }
 
-  public restore(snapshot: Snapshot): void {
+  restore(snapshot: Snapshot): void {
     // do nothing
   }
 
@@ -93,7 +89,7 @@ export class PairAToken extends Pair {
     return this.copy();
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     return [];
   }
 }

@@ -1,15 +1,15 @@
-import { Address, Pair } from "./pair";
+import type { Address, Pair } from "./pair";
 
 export abstract class Registry {
-	private name: string
+  private name: string;
 
-	constructor(name: string) {
-		this.name = name
-	}
+  constructor(name: string) {
+    this.name = name;
+  }
 
-	public getName(): string {
-		return this.name
-	}
+  getName(): string {
+    return this.name;
+  }
 
-	public abstract findPairs(tokenWhitelist: Address[]): Promise<Pair[]>
+  abstract findPairs(tokenWhitelist: Address[]): Promise<Pair[]>;
 }

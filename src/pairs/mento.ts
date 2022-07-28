@@ -1,14 +1,13 @@
-import { ContractKit, StableToken } from "@celo/contractkit";
-import { ExchangeWrapper } from "@celo/contractkit/lib/wrappers/Exchange";
+import type { ContractKit, StableToken } from "@celo/contractkit";
+import type { ExchangeWrapper } from "@celo/contractkit/lib/wrappers/Exchange";
+import type { ReserveWrapper } from "@celo/contractkit/lib/wrappers/Reserve";
+import type { SortedOraclesWrapper } from "@celo/contractkit/lib/wrappers/SortedOracles";
 import BigNumber from "bignumber.js";
-import Web3 from "web3";
 
-import { PairXYeqK } from "../pair";
 import { address as pairMentoAddress } from "../../tools/deployed/mainnet.PairMento.addr.json";
-import { ReserveWrapper } from "@celo/contractkit/lib/wrappers/Reserve";
-import { SortedOraclesWrapper } from "@celo/contractkit/lib/wrappers/SortedOracles";
+import type { MultiCallPayload } from "../multicall";
+import { PairXYeqK } from "../pair";
 import { selectAddress } from "../utils";
-import { MultiCallPayload } from "../multicall";
 
 export class PairMento extends PairXYeqK {
   allowRepeats = false;
@@ -38,7 +37,7 @@ export class PairMento extends PairXYeqK {
     };
   }
 
-  public async refresh(): Promise<void> {
+  async refresh(): Promise<void> {
     const [lastUpdateSecs, updateFrequencySecs, spread] = await Promise.all([
       this.exchange!.lastBucketUpdate(),
       this.exchange!.updateFrequency(),
@@ -103,7 +102,7 @@ export class PairMento extends PairXYeqK {
     return this.exchange!.address;
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     return [];
   }
 }

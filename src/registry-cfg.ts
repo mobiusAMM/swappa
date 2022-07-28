@@ -1,16 +1,16 @@
+import type { ContractKit } from "@celo/contractkit";
 import BigNumber from "bignumber.js";
-import Web3 from "web3";
-import { ContractKit } from "@celo/contractkit";
-import { SavingsCELOAddressMainnet } from "@terminal-fi/savingscelo";
-import { PairStableSwap } from "./pairs/stableswap";
+import type Web3 from "web3";
+
 import { PairOpenSumSwap } from "./pairs/opensumswap";
+import { PairStableSwap } from "./pairs/stableswap";
 import { PairSymmetricSwap } from "./pairs/symmetricswap";
 import { RegistryAave } from "./registries/aave";
 import { RegistryAaveV2 } from "./registries/aave-v2";
+import { RegistryBalancer } from "./registries/balancer";
 import { RegistryMento } from "./registries/mento";
 import { RegistryStatic } from "./registries/static";
 import { RegistryUniswapV2 } from "./registries/uniswapv2";
-import { RegistryBalancer } from "./registries/balancer";
 
 export const mainnetRegistryMoola = (kit: ContractKit) =>
   new RegistryAave("moola", kit, "0x7AAaD5a5fa74Aec83b74C2a098FBC86E17Ce4aEA");

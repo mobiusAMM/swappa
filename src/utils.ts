@@ -1,12 +1,12 @@
-import Web3 from "web3";
 import { concurrentMap } from "@celo/utils/lib/async";
+import { Interface } from "@ethersproject/abi";
+
 // import { ABI as StableSwapABI } from "../types/web3-v1-contracts/ISwap";
 import StableSwapABI from "../tools/abi/StableSwap.json";
-import { ABI as XYeqKABI } from "../types/web3-v1-contracts/IUniswapV2Pair";
-import { ABI as BalanceV1ABI } from "../types/web3-v1-contracts/ISymmetricSwap";
 import { ABI as ERC20ABI } from "../types/web3-v1-contracts/ERC20";
-import { Address, Pair } from "./pair";
-import { Interface } from "@ethersproject/abi";
+import { ABI as BalanceV1ABI } from "../types/web3-v1-contracts/ISymmetricSwap";
+import { ABI as XYeqKABI } from "../types/web3-v1-contracts/IUniswapV2Pair";
+import type { Address, Pair } from "./pair";
 
 export const initPairsAndFilterByWhitelist = async (
   pairs: Pair[],

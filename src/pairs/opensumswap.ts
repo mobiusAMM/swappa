@@ -1,14 +1,13 @@
-import Web3 from "web3";
 import BigNumber from "bignumber.js";
+import type Web3 from "web3";
 
-import {
-  IOpenSumSwap,
-  ABI as SwapABI,
-} from "../../types/web3-v1-contracts/IOpenSumSwap";
-import { Address, Pair, Snapshot, BigNumberString } from "../pair";
-import { selectAddress } from "../utils";
 import { address as pairOpenSumSwapAddress } from "../../tools/deployed/mainnet.PairOpenSumSwap.addr.json";
-import { MultiCallPayload } from "../multicall";
+import type { IOpenSumSwap } from "../../types/web3-v1-contracts/IOpenSumSwap";
+import { ABI as SwapABI } from "../../types/web3-v1-contracts/IOpenSumSwap";
+import type { MultiCallPayload } from "../multicall";
+import type { Address, BigNumberString, Snapshot } from "../pair";
+import { Pair } from "../pair";
+import { selectAddress } from "../utils";
 
 interface PairOpenSumSwapSnapshot extends Snapshot {
   paused: boolean;
@@ -21,7 +20,7 @@ export class PairOpenSumSwap extends Pair {
   allowRepeats = false;
   private swapPool: IOpenSumSwap;
 
-  private paused: boolean = false;
+  private paused = false;
   private balances: BigNumber[] = [];
 
   constructor(chainId: number, web3: Web3, private swapPoolAddr: Address) {
@@ -44,7 +43,7 @@ export class PairOpenSumSwap extends Pair {
     };
   }
 
-  public async refresh() {
+  async refresh() {
     const [paused, balances] = await Promise.all([
       this.swapPool.methods.paused().call(),
       this.swapPool.methods.getBalances().call(),
@@ -56,7 +55,7 @@ export class PairOpenSumSwap extends Pair {
     this.balances = balances.map((b) => new BigNumber(b));
   }
 
-  public outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
+  outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
     if (this.paused) {
       return ZERO;
     }
@@ -78,27 +77,27 @@ export class PairOpenSumSwap extends Pair {
     return this.swapPoolAddr;
   }
 
-  public snapshot(): PairOpenSumSwapSnapshot {
+  snapshot(): PairOpenSumSwapSnapshot {
     return {
       paused: this.paused,
       balances: this.balances.map((b) => b.toFixed()),
     };
   }
 
-  public depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
+  depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
     return new BigNumber(0);
   }
 
-  public withdrawAmount(lpAmount: BigNumber): BigNumber[] {
+  withdrawAmount(lpAmount: BigNumber): BigNumber[] {
     return [];
   }
 
-  public restore(snapshot: PairOpenSumSwapSnapshot): void {
+  restore(snapshot: PairOpenSumSwapSnapshot): void {
     this.paused = snapshot.paused;
     this.balances = snapshot.balances.map((b) => new BigNumber(b));
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     return [];
   }
 }

@@ -1,11 +1,13 @@
 import BigNumber from "bignumber.js";
-import Web3 from "web3";
+import type Web3 from "web3";
 
-import { IbPool, ABI as BPoolABI } from "../../types/web3-v1-contracts/IBPool";
-import { Address, Pair, Snapshot, BigNumberString } from "../pair";
 import { address as pairBPoolAddress } from "../../tools/deployed/mainnet.PairBPool.addr.json";
+import type { IbPool } from "../../types/web3-v1-contracts/IBPool";
+import { ABI as BPoolABI } from "../../types/web3-v1-contracts/IBPool";
+import type { MultiCallPayload } from "../multicall";
+import type { Address, BigNumberString, Snapshot } from "../pair";
+import { Pair } from "../pair";
 import { selectAddress } from "../utils";
-import { MultiCallPayload } from "../multicall";
 
 const ZERO = new BigNumber(0);
 const ONE = new BigNumber(1);
@@ -60,7 +62,7 @@ export class PairBPool extends Pair {
     return copy;
   }
 
-  public async refresh() {
+  async refresh() {
     const [balanceA, balanceB] = await Promise.all([
       this.bPool.methods.getBalance(this.tokenA).call(),
       this.bPool.methods.getBalance(this.tokenB).call(),
@@ -70,7 +72,7 @@ export class PairBPool extends Pair {
     this.balanceB = new BigNumber(balanceB);
   }
 
-  public outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
+  outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
     if (this.balanceA.lt(1) || this.balanceB.lt(1)) {
       return ZERO;
     }
@@ -108,26 +110,26 @@ export class PairBPool extends Pair {
     return this.poolAddr;
   }
 
-  public snapshot(): PairBPoolSnapshot {
+  snapshot(): PairBPoolSnapshot {
     return {
       balanceA: this.balanceA.toFixed(),
       balanceB: this.balanceB.toFixed(),
     };
   }
-  public restore(snapshot: PairBPoolSnapshot): void {
+  restore(snapshot: PairBPoolSnapshot): void {
     this.balanceA = new BigNumber(snapshot.balanceA);
     this.balanceB = new BigNumber(snapshot.balanceB);
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     return [];
   }
 
-  public depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
+  depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
     return new BigNumber(0);
   }
 
-  public withdrawAmount(lpAmount: BigNumber): BigNumber[] {
+  withdrawAmount(lpAmount: BigNumber): BigNumber[] {
     return [];
   }
 }

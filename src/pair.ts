@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
-import { MultiCallPayload } from "./multicall";
+
+import type { MultiCallPayload } from "./multicall";
 
 export type Address = string;
 
@@ -38,11 +39,11 @@ export abstract class Pair {
   // pairKey is used to identify conflicting pairs. In a single route, every non-null pairKey must
   // be unique. On the otherhand, Pair-s with null pairKey can be used unlimited amount of times in
   // a single route.
-  public pairKey: string | null = null;
-  public tokenA: Address = "";
-  public tokenB: Address = "";
-  public lpToken?: Address;
-  public lpSupply: BigNumber = new BigNumber(0);
+  pairKey: string | null = null;
+  tokenA: Address = "";
+  tokenB: Address = "";
+  lpToken?: Address;
+  lpSupply: BigNumber = new BigNumber(0);
   private swappaPairAddress: Address = "";
   private depositAddress: Address = "";
 
@@ -51,11 +52,11 @@ export abstract class Pair {
     this.depositAddress = depositAddress;
   }
 
-  public copy(): Pair {
+  copy(): Pair {
     return Object.create(this);
   }
 
-  public async init(): Promise<void> {
+  async init(): Promise<void> {
     const r = await this._init();
     this.pairKey = r.pairKey;
     this.tokenA = r.tokenA;
@@ -70,15 +71,15 @@ export abstract class Pair {
     tokenA: Address;
     tokenB: Address;
   }>;
-  public abstract refresh(): Promise<void>;
-  public swapData(inputToken: Address): SwapData {
+  abstract refresh(): Promise<void>;
+  swapData(inputToken: Address): SwapData {
     return {
       addr: this.swappaPairAddress,
       extra: this.swapExtraData(inputToken),
     };
   }
 
-  public depositData(): DepositData {
+  depositData(): DepositData {
     return {
       addr: this.depositAddress,
       extra: this.depositExtraData(),
@@ -89,37 +90,34 @@ export abstract class Pair {
   protected depositExtraData(): string {
     return "";
   }
-  public abstract outputAmount(
-    inputToken: Address,
-    inputAmount: BigNumber
-  ): BigNumber;
+  abstract outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber;
 
-  public async loadLpAddress() {
+  async loadLpAddress() {
     return true;
   }
 
-  public depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
+  depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
     return new BigNumber(0);
   }
 
-  public withdrawAmount(lpAmount: BigNumber): BigNumber[] {
+  withdrawAmount(lpAmount: BigNumber): BigNumber[] {
     return [];
   }
 
-  public get canDepositOneSided(): boolean {
+  get canDepositOneSided(): boolean {
     return false;
   }
 
-  public abstract snapshot(): Snapshot;
-  public abstract restore(snapshot: Snapshot): void;
-  public bootstrap({ tokenA, tokenB, pairKey, lpToken, lpSupply }: BootInfo) {
+  abstract snapshot(): Snapshot;
+  abstract restore(snapshot: Snapshot): void;
+  bootstrap({ tokenA, tokenB, pairKey, lpToken, lpSupply }: BootInfo) {
     this.pairKey = pairKey ?? this.pairKey;
     this.tokenA = tokenA ?? this.tokenA;
     this.tokenB = tokenB ?? this.tokenB;
     this.lpToken = lpToken ?? this.lpToken;
     this.lpSupply = lpSupply ? new BigNumber(lpSupply) : this.lpSupply;
   }
-  public getDescriptor(): PairDescriptor {
+  getDescriptor(): PairDescriptor {
     return {
       _type: "general",
       tokenA: this.tokenA,
@@ -129,7 +127,7 @@ export abstract class Pair {
       pairKey: this.pairKey ?? undefined,
     };
   }
-  public abstract getMulticallPayloadForBootstrap(): MultiCallPayload[];
+  abstract getMulticallPayloadForBootstrap(): MultiCallPayload[];
 }
 
 interface PairXYeqKSnapshot extends Snapshot {
@@ -149,11 +147,7 @@ export abstract class PairXYeqK extends Pair {
   protected bucketA: BigNumber = new BigNumber(0);
   protected bucketB: BigNumber = new BigNumber(0);
 
-  public refreshBuckets(
-    fee: BigNumber,
-    bucketA: BigNumber,
-    bucketB: BigNumber
-  ) {
+  refreshBuckets(fee: BigNumber, bucketA: BigNumber, bucketB: BigNumber) {
     this.fee = fee;
     this.bucketA = bucketA;
     this.bucketB = bucketB;
@@ -166,7 +160,7 @@ export abstract class PairXYeqK extends Pair {
     return copy;
   }
 
-  public outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
+  outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
     const buckets =
       inputToken === this.tokenA
         ? [this.bucketA, this.bucketB]
@@ -188,7 +182,7 @@ export abstract class PairXYeqK extends Pair {
     return !outputAmount.isNaN() ? outputAmount : new BigNumber(0);
   }
 
-  public inputAmount(outputToken: Address, outputAmount: BigNumber): BigNumber {
+  inputAmount(outputToken: Address, outputAmount: BigNumber): BigNumber {
     const buckets =
       outputToken === this.tokenB
         ? [this.bucketA, this.bucketB]
@@ -205,13 +199,13 @@ export abstract class PairXYeqK extends Pair {
       .div(buckets[1].minus(outputAmount).multipliedBy(this.fee));
   }
 
-  public depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
+  depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
     const amount0 = amountA.multipliedBy(this.lpSupply).dividedBy(this.bucketA);
     const amount1 = amountB.multipliedBy(this.lpSupply).dividedBy(this.bucketB);
     return amount0.lte(amount1) ? amount0 : amount1;
   }
 
-  public withdrawAmount(lpAmount: BigNumber): BigNumber[] {
+  withdrawAmount(lpAmount: BigNumber): BigNumber[] {
     const multiplier = lpAmount.dividedBy(this.lpSupply);
     return [
       this.bucketA.multipliedBy(multiplier),
@@ -219,7 +213,7 @@ export abstract class PairXYeqK extends Pair {
     ];
   }
 
-  public snapshot(): PairXYeqKSnapshot {
+  snapshot(): PairXYeqKSnapshot {
     return {
       fee: this.fee.toFixed(),
       bucketA: this.bucketA.toFixed(),
@@ -227,18 +221,13 @@ export abstract class PairXYeqK extends Pair {
     };
   }
 
-  public restore(snapshot: PairXYeqKSnapshot): void {
+  restore(snapshot: PairXYeqKSnapshot): void {
     this.fee = snapshot.fee ? new BigNumber(snapshot.fee) : this.fee;
     this.bucketA = new BigNumber(snapshot.bucketA);
     this.bucketB = new BigNumber(snapshot.bucketB);
   }
 
-  public bootstrap({
-    bucketA,
-    bucketB,
-    fee,
-    ...rest
-  }: PairXYeqKBootInfo): void {
+  bootstrap({ bucketA, bucketB, fee, ...rest }: PairXYeqKBootInfo): void {
     super.bootstrap(rest);
     this.restore({ fee, bucketA, bucketB });
   }

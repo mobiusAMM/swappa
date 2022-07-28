@@ -1,14 +1,15 @@
 import { Contract } from "@celo/connect";
-import { Interface, Result } from "@ethersproject/abi";
+import type { Interface, Result } from "@ethersproject/abi";
 import { getAddress } from "@ethersproject/address";
-import MULTICALL_ABI from "./abi.json";
-import { AbiItem } from "web3-utils";
-import { Address } from "../pair";
-import warning from "tiny-warning";
-import invariant from "tiny-invariant";
 import BigNumber from "bignumber.js";
-import Web3 from "web3";
+import invariant from "tiny-invariant";
+import warning from "tiny-warning";
+import type Web3 from "web3";
+import type { AbiItem } from "web3-utils";
+
+import type { Address } from "../pair";
 import { chunkArray } from "../utils";
+import MULTICALL_ABI from "./abi.json";
 
 export const MULTI_CALL = "0x75f59534dd892c1f8a7b172d639fa854d529ada3"; // TODO: Extend to multichain
 

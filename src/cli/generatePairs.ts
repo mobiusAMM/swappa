@@ -1,19 +1,19 @@
 #!/usr/bin/env node
-import commander from "commander";
-import { ContractKit, newKit } from "@celo/contractkit";
-
+import type { ContractKit } from "@celo/contractkit";
+import { newKit } from "@celo/contractkit";
 import * as ubeswapTokens from "@ubeswap/default-token-list/ubeswap-experimental.token-list.json";
+import fs from "fs";
+import Web3 from "web3";
+
 import { address as swappaRouterV1Address } from "../../tools/deployed/mainnet.SwappaRouterV1.addr.json";
-import { SwappaManager } from "../swappa-manager";
+import type { Registry } from "../registry";
 import {
   mainnetRegistryMobius,
   mainnetRegistryMoolaV2,
   mainnetRegistrySushiswap,
   mainnetRegistryUbeswap,
 } from "../registry-cfg";
-import { Registry } from "../registry";
-import Web3 from "web3";
-import fs from "fs";
+import { SwappaManager } from "../swappa-manager";
 
 const registriesByName: { [name: string]: (kit: ContractKit) => Registry } = {
   // mento: (kit: ContractKit) => new RegistryMento(kit),

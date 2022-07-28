@@ -1,24 +1,19 @@
-import Web3 from "web3";
 import BigNumber from "bignumber.js";
+import type Web3 from "web3";
 
-import {
-  IUniswapV2Pair,
-  ABI as PairABI,
-} from "../../types/web3-v1-contracts/IUniswapV2Pair";
-import {
+import { address as pairUniswapV2Address } from "../../tools/deployed/mainnet.PairUniswapV2.addr.json";
+import { ABI as Erc20ABI } from "../../types/web3-v1-contracts/ERC20";
+import type { IUniswapV2Pair } from "../../types/web3-v1-contracts/IUniswapV2Pair";
+import { ABI as PairABI } from "../../types/web3-v1-contracts/IUniswapV2Pair";
+import type { MultiCallPayload } from "../multicall";
+import type {
   Address,
   BigNumberString,
-  Pair,
   PairDescriptor,
-  PairXYeqK,
   PairXYeqKBootInfo,
 } from "../pair";
-import { address as pairUniswapV2Address } from "../../tools/deployed/mainnet.PairUniswapV2.addr.json";
-
-import { ERC20Interface, selectAddress, UniV2Interface } from "../utils";
-import { convertResultToBigNumber, MultiCallPayload } from "../multicall";
-import { Erc20, ABI as Erc20ABI } from "../../types/web3-v1-contracts/ERC20";
-import invariant from "tiny-invariant";
+import { PairXYeqK } from "../pair";
+import { selectAddress, UniV2Interface } from "../utils";
 
 export interface PairUniswapBootInfo extends PairXYeqKBootInfo {
   reserves: BigNumberString[];
@@ -71,7 +66,7 @@ export class PairUniswapV2 extends PairXYeqK {
     };
   }
 
-  public async refresh(): Promise<void> {
+  async refresh(): Promise<void> {
     if (!this.pair) {
       throw new Error(`not initialized!`);
     }
@@ -84,14 +79,14 @@ export class PairUniswapV2 extends PairXYeqK {
   }
 
   protected swapExtraData() {
-    return `${this.pair!.options.address}${this.feeKData}`;
+    return `${this.pair.options.address}${this.feeKData}`;
   }
 
   protected depositExtraData(): string {
     return this.swapExtraData();
   }
 
-  public bootstrap({ reserves, ...rest }: PairUniswapBootInfo): void {
+  bootstrap({ reserves, ...rest }: PairUniswapBootInfo): void {
     super.bootstrap({
       ...rest,
       bucketA: reserves[0],
@@ -100,12 +95,12 @@ export class PairUniswapV2 extends PairXYeqK {
     });
   }
 
-  public loadLpAddress(): Promise<boolean> {
+  loadLpAddress(): Promise<boolean> {
     this.lpToken = this.pairAddr;
     return new Promise((res) => res(true));
   }
 
-  public getDescriptor(): PairDescriptor {
+  getDescriptor(): PairDescriptor {
     const TEN = new BigNumber("10");
     const liquidityA = this.bucketA.div(TEN.pow(this.decimals[0]));
     const liquidityB = this.bucketB.div(TEN.pow(this.decimals[1]));
@@ -120,7 +115,7 @@ export class PairUniswapV2 extends PairXYeqK {
     };
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     return [
       {
         fieldName: "reserves",

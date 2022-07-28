@@ -1,27 +1,23 @@
 #!/usr/bin/env node
-import commander from "commander";
-import { ContractKit, newKit } from "@celo/contractkit";
-import BigNumber from "bignumber.js";
 import { toTransactionObject } from "@celo/connect";
-
+import type { ContractKit } from "@celo/contractkit";
+import { newKit } from "@celo/contractkit";
 import * as ubeswapTokens from "@ubeswap/default-token-list/ubeswap-experimental.token-list.json";
-import { Ierc20, ABI as Ierc20ABI } from "../../types/web3-v1-contracts/IERC20";
-import { address as swappaRouterV1Address } from "../../tools/deployed/mainnet.SwappaRouterV1.addr.json";
+import BigNumber from "bignumber.js";
+import commander from "commander";
+import Web3 from "web3";
 
-import { SwappaManager } from "../swappa-manager";
+import { address as swappaRouterV1Address } from "../../tools/deployed/mainnet.SwappaRouterV1.addr.json";
+import type { Ierc20 } from "../../types/web3-v1-contracts/IERC20";
+import { ABI as Ierc20ABI } from "../../types/web3-v1-contracts/IERC20";
+import type { Registry } from "../registry";
 import {
   mainnetRegistryMobius,
-  mainnetRegistryMoola,
   mainnetRegistryMoolaV2,
   mainnetRegistrySushiswap,
   mainnetRegistryUbeswap,
-  mainnetRegistryCeloDex,
-  mainnetRegistrySymmetric,
-  mainnetRegistryMisc,
 } from "../registry-cfg";
-import { RegistryMento } from "../registries/mento";
-import { Registry } from "../registry";
-import Web3 from "web3";
+import { SwappaManager } from "../swappa-manager";
 
 const program = commander.program
   .option(
@@ -211,7 +207,7 @@ async function main() {
       console.info(`TX Done: ${approveReceipt.transactionHash}`);
     }
 
-    const precheck: boolean = !opts.noPrecheck;
+    const precheck = !opts.noPrecheck;
   }
 }
 

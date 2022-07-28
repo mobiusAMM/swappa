@@ -1,27 +1,24 @@
-import Web3 from "web3";
+import type { Result } from "@ethersproject/abi";
 import BigNumber from "bignumber.js";
-import { Result } from "@ethersproject/abi";
-import { ISwap, ABI as SwapABI } from "../../types/web3-v1-contracts/ISwap";
-import { Erc20, ABI as Erc20ABI } from "../../types/web3-v1-contracts/ERC20";
-
+import type Web3 from "web3";
 import { encodePacked } from "web3-utils";
 
-import {
+import { address as pairStableSwapAddress } from "../../tools/deployed/mainnet.PairStableSwap.addr.json";
+import type { Erc20 } from "../../types/web3-v1-contracts/ERC20";
+import { ABI as Erc20ABI } from "../../types/web3-v1-contracts/ERC20";
+import type { ISwap } from "../../types/web3-v1-contracts/ISwap";
+import { ABI as SwapABI } from "../../types/web3-v1-contracts/ISwap";
+import type { MultiCallPayload } from "../multicall";
+import { convertResultToString } from "../multicall";
+import type {
   Address,
-  Pair,
-  Snapshot,
   BigNumberString,
   BootInfo,
   PairDescriptor,
+  Snapshot,
 } from "../pair";
-import { ERC20Interface, selectAddress, StableSwapInterface } from "../utils";
-import { address as pairStableSwapAddress } from "../../tools/deployed/mainnet.PairStableSwap.addr.json";
-import {
-  convertResultToBigNumber,
-  convertResultToString,
-  MultiCallPayload,
-} from "../multicall";
-import invariant from "tiny-invariant";
+import { Pair } from "../pair";
+import { selectAddress, StableSwapInterface } from "../utils";
 
 interface PairStableSwapSnapshot extends Snapshot {
   paused: boolean;
@@ -45,7 +42,7 @@ export class PairStableSwap extends Pair {
   allowRepeats = false;
   private swapPool: ISwap;
 
-  private paused: boolean = false;
+  private paused = false;
   private gaugeAddress?: Address;
   private tokenPrecisionMultipliers: BigNumber[] = [];
   private balancesWithAdjustedPrecision: BigNumber[] = [];
@@ -103,11 +100,11 @@ export class PairStableSwap extends Pair {
     };
   }
 
-  public get canDepositOneSided(): boolean {
+  get canDepositOneSided(): boolean {
     return true;
   }
 
-  public async loadLpAddress(): Promise<boolean> {
+  async loadLpAddress(): Promise<boolean> {
     return true;
   }
 
@@ -120,7 +117,7 @@ export class PairStableSwap extends Pair {
     return copy;
   }
 
-  public async refresh() {
+  async refresh() {
     const [paused, balances, swapFee, preciseA] = await Promise.all([
       this.swapPool.methods.paused().call(),
       this.swapPool.methods.getBalances().call(),
@@ -138,7 +135,7 @@ export class PairStableSwap extends Pair {
     this.preciseA = new BigNumber(preciseA);
   }
 
-  public outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
+  outputAmount(inputToken: Address, inputAmount: BigNumber): BigNumber {
     if (this.paused) {
       return new BigNumber(0);
     }
@@ -253,7 +250,7 @@ export class PairStableSwap extends Pair {
     );
   }
 
-  public snapshot(): PairStableSwapSnapshot {
+  snapshot(): PairStableSwapSnapshot {
     return {
       paused: this.paused,
       tokenPrecisionMultipliers: this.tokenPrecisionMultipliers.map((n) =>
@@ -268,7 +265,7 @@ export class PairStableSwap extends Pair {
   }
 
   // https://github.com/mobiusAMM/mobiusV1/blob/75eb17d390e28c91e640c82d5610191d5852cbb4/contracts/SwapUtils.sol#L866
-  public depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
+  depositAmount(amountA: BigNumber, amountB: BigNumber): BigNumber {
     const amounts = [amountA, amountB];
     const lpSupply = this.lpSupply;
     const newBalances = this.balancesWithAdjustedPrecision.map((el, i) =>
@@ -281,14 +278,14 @@ export class PairStableSwap extends Pair {
     return d1.minus(d0).times(lpSupply).div(d0);
   }
 
-  public withdrawAmount(lpAmount: BigNumber): BigNumber[] {
+  withdrawAmount(lpAmount: BigNumber): BigNumber[] {
     const multiplier = lpAmount.dividedBy(this.lpSupply);
     return this.balancesWithAdjustedPrecision.map((bal, i) =>
       bal.multipliedBy(multiplier).div(this.tokenPrecisionMultipliers[i])
     );
   }
 
-  public restore(snapshot: PairStableSwapSnapshot): void {
+  restore(snapshot: PairStableSwapSnapshot): void {
     this.paused = snapshot.paused;
     this.swapFee = new BigNumber(snapshot.swapFee);
     this.preciseA = new BigNumber(snapshot.preciseA);
@@ -301,7 +298,7 @@ export class PairStableSwap extends Pair {
       snapshot.balancesWithAdjustedPrecision?.map((r) => new BigNumber(r));
   }
 
-  public bootstrap({
+  bootstrap({
     tokenA,
     tokenB,
     pairKey,
@@ -331,7 +328,7 @@ export class PairStableSwap extends Pair {
     this.restore(rest);
   }
 
-  public getMulticallPayloadForBootstrap(): MultiCallPayload[] {
+  getMulticallPayloadForBootstrap(): MultiCallPayload[] {
     const template = {
       targetInterface: StableSwapInterface,
       target: this.swapPoolAddr,
@@ -365,7 +362,7 @@ export class PairStableSwap extends Pair {
     return callInfo.map((el) => ({ ...template, ...el }));
   }
 
-  public getDescriptor(): PairDescriptor {
+  getDescriptor(): PairDescriptor {
     return {
       ...super.getDescriptor(),
       _type: "stableswap",
