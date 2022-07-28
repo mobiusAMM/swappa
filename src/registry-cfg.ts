@@ -2,7 +2,6 @@ import BigNumber from "bignumber.js";
 import Web3 from "web3";
 import { ContractKit } from "@celo/contractkit";
 import { SavingsCELOAddressMainnet } from "@terminal-fi/savingscelo";
-import { PairSavingsCELO } from "./pairs/savingscelo";
 import { PairStableSwap } from "./pairs/stableswap";
 import { PairOpenSumSwap } from "./pairs/opensumswap";
 import { PairSymmetricSwap } from "./pairs/symmetricswap";
@@ -174,15 +173,7 @@ export const mainnetRegistryMisc = (kit: ContractKit) => {
     ])
   );
 };
-export const mainnetRegistrySavingsCELO = (kit: ContractKit) =>
-  new RegistryStatic(
-    "savingscelo",
-    kit.web3.eth
-      .getChainId()
-      .then((chainId) => [
-        new PairSavingsCELO(chainId, kit, SavingsCELOAddressMainnet),
-      ])
-  );
+
 export const mainnetRegistryMoolaV2 = (kit: ContractKit) =>
   new RegistryAaveV2(
     "moola-v2",

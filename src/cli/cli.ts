@@ -13,7 +13,6 @@ import {
   mainnetRegistryMobius,
   mainnetRegistryMoola,
   mainnetRegistryMoolaV2,
-  mainnetRegistrySavingsCELO,
   mainnetRegistrySushiswap,
   mainnetRegistryUbeswap,
   mainnetRegistryCeloDex,
