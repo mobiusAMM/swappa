@@ -17,13 +17,26 @@ import {
 import { Address, BootInfo, Pair, PairDescriptor } from "./pair";
 import { PairATokenV2 } from "./pairs/atoken-v2";
 import { PairStableSwap } from "./pairs/stableswap";
+import {
+  PairRebasedStCelo,
+  PairStakedCeloDescriptor,
+  PairStCelo,
+  PairStCeloDescriptor,
+} from "./pairs/stCelo";
 import { PairSymmetricSwap } from "./pairs/symmetricswap";
 import { PairUniswapV2 } from "./pairs/uniswapv2";
 import { Registry } from "./registry";
 import { findBestRoutesForFixedInputAmount, Route, RouterOpts } from "./router";
 
 function parsePairTypeToPair(
-  { _type: pairType, tokenA, tokenB, poolAddress, lpToken }: PairDescriptor,
+  {
+    _type: pairType,
+    tokenA,
+    tokenB,
+    poolAddress,
+    lpToken,
+    ...rest
+  }: PairDescriptor,
   web3: Web3,
   chainId = 42220
 ): Pair | undefined {
@@ -36,6 +49,27 @@ function parsePairTypeToPair(
       return new PairStableSwap(chainId, web3, poolAddress, lpToken);
     case "uni-v2":
       return new PairUniswapV2(chainId, web3, poolAddress, undefined, lpToken);
+    case "stCelo": {
+      const { accountAddress, managerAddress } = rest as PairStCeloDescriptor;
+      return new PairStCelo(
+        chainId,
+        web3,
+        accountAddress,
+        managerAddress,
+        tokenA,
+        tokenB
+      );
+    }
+    case "rstCelo": {
+      const { accountAddress } = rest as PairStakedCeloDescriptor;
+      return new PairRebasedStCelo(
+        chainId,
+        web3,
+        accountAddress,
+        tokenA,
+        tokenB
+      );
+    }
     default:
       return undefined;
   }

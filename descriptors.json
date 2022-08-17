@@ -1001,5 +1001,31 @@
     "tokenA": "0xE273Ad7ee11dCfAA87383aD5977EE1504aC07568",
     "tokenB": "0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73",
     "poolAddress": "0x970b12522CA9b4054807a2c5B736149a5BE6f670"
+  },
+  {
+    "_type": "stableswap",
+    "tokenA": "0x471EcE3750Da237f93B8E339c536989b8978a438",
+    "tokenB": "0xDc5762753043327d74e0a538199c1488FC1F44cf",
+    "poolAddress": "0xEBf0536356256f8FF2a5Eb6C65800839801d8B95",
+    "lpToken": "0x4730ff6bC3008a40cf74D660D3f20d5b51646dA3",
+    "pairKey": "0xEBf0536356256f8FF2a5Eb6C65800839801d8B95",
+    "decimals": [18, 18]
+  },
+  {
+    "_type": "stCelo",
+    "pairKey": "0xC668583dcbDc9ae6FA3CE46462758188adfdfC24",
+    "tokenA": "0x471EcE3750Da237f93B8E339c536989b8978a438",
+    "tokenB": "0xC668583dcbDc9ae6FA3CE46462758188adfdfC24",
+    "poolAddress": "",
+    "managerAddress": "0x0239b96D10a434a56CC9E09383077A0490cF9398",
+    "accountAddress": "0x4aAD04D41FD7fd495503731C5a2579e19054C432"
+  },
+  {
+    "_type": "rstCelo",
+    "pairKey": "0xDc5762753043327d74e0a538199c1488FC1F44cf",
+    "tokenA": "0xDc5762753043327d74e0a538199c1488FC1F44cf",
+    "tokenB": "0xC668583dcbDc9ae6FA3CE46462758188adfdfC24",
+    "poolAddress": "",
+    "accountAddress": "0x4aAD04D41FD7fd495503731C5a2579e19054C432"
   }
 ]

@@ -1,0 +1,9 @@
+{
+    "_type": "stableswap",
+    "tokenA": "0x471EcE3750Da237f93B8E339c536989b8978a438",
+    "tokenB": "0xC668583dcbDc9ae6FA3CE46462758188adfdfC24",
+    "poolAddress": "0xEBf0536356256f8FF2a5Eb6C65800839801d8B95",
+    "lpToken": "0x4730ff6bC3008a40cf74D660D3f20d5b51646dA3",
+    "pairKey": "0xEBf0536356256f8FF2a5Eb6C65800839801d8B95",
+    "decimals": [18, 18]
+  },

@@ -31,6 +31,8 @@ export interface PairDescriptor extends BootInfo {
     | "stableswap"
     | "balancer-v1"
     | "uni-v2"
+    | "stCelo"
+    | "rstCelo"
     | "general";
 }
 
